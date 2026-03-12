@@ -1,0 +1,13 @@
+# Library utama untuk YOLO
+ultralytics==8.1.0
+
+# Library untuk pemrosesan gambar dan video
+opencv-python>=4.8.0
+numpy>=1.24.0
+
+# Library tambahan untuk pelacakan (tracking) dan dataset
+roboflow
+lapx>=0.5.5
+
+# Framework UI (kalau nanti Aa mau bikin dashboard/web sederhana kayak di jurnal Puspita)
+gradio

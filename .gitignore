@@ -1,0 +1,13 @@
+# Mengabaikan Virtual Environment & Cache Python
+venv/
+__pycache__/
+*.pyc
+
+# Mengabaikan File Video & Dataset Gambar
+*.mp4
+*.avi
+dataset_frames/
+
+# Mengabaikan Bobot Model YOLO & Folder Hasil Run
+*.pt
+runs/
