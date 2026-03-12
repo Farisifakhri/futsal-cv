@@ -1,57 +1,65 @@
-# ⚽ Futsal Video Analysis with YOLOv8
+<div align="center">
+  <h1>⚽ Futsal Video Analysis with YOLOv8</h1>
+  <p>
+    <img src="https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+    <img src="https://img.shields.io/badge/YOLO-v8-yellow?style=for-the-badge&logo=ultralytics&logoColor=black" alt="YOLOv8" />
+    <img src="https://img.shields.io/badge/OpenCV-4.8.0-green?style=for-the-badge&logo=opencv&logoColor=white" alt="OpenCV" />
+    <img src="https://img.shields.io/badge/Status-Development-orange?style=for-the-badge" alt="Status" />
+  </p>
+  <p><i>Sistem deteksi otomatis untuk pemain, bola, dan wasit futsal menggunakan AI berbasis Computer Vision.</i></p>
+</div>
 
-Proyek *Computer Vision* untuk menganalisis rekaman pertandingan futsal secara otomatis menggunakan **YOLOv8** dan **OpenCV**. Sistem ini dirancang untuk mendeteksi pemain, wasit, dan bola, serta ke depannya akan dikembangkan untuk analisis taktik, *tracking*, dan pendeteksian pelanggaran.
+---
+
+## 🎯 Target Fitur & Portofolio
+*(Efek kotak-kotak tabel biar rapi)*
+
+| Komponen Analisis | Status Pengerjaan | Deskripsi |
+| :--- | :---: | :--- |
+| **Deteksi Objek Dasar** | ✅ Selesai | Mendeteksi entitas (orang, bola) menggunakan pre-trained YOLOv8. |
+| **Ekstraksi Dataset** | ✅ Selesai | Memotong video futsal menjadi *frame* gambar siap *labeling*. |
+| **Custom Model Futsal** | ⏳ *In Progress* | Melatih model untuk membedakan Tim A, Tim B, dan Wasit. |
+| **Logika Pelanggaran** | ⏳ *In Progress* | Mendeteksi benturan (*foul*) dan *gesture* wasit. |
+| **Dashboard UI** | ⏳ *In Progress* | Antarmuka interaktif berbasis Web (Gradio/Streamlit). |
+
+---
 
 ## 📂 Struktur Proyek
-- `data/` : Folder untuk menyimpan video mentah dan dataset gambar (*frames*).
-- `models/` : Folder untuk menyimpan bobot (*weights*) model YOLO.
-- `notebook/` : Coret-coretan atau eksperimen awal.
-- `outputs/` : Hasil deteksi berupa gambar atau video.
-- `src/` : Kumpulan *script* logika utama Python.
-- `venv/` : *Virtual environment* Python (diabaikan oleh Git).
-- `test_yolo.py` : *Script* untuk menguji model bawaan YOLOv8.
+```text
+C:\futsal-cv\
+├── data/                  # Tempat menyimpan video mentah dan hasil ekstrak frame
+├── models/                # Tempat menyimpan bobot (weights) model YOLO
+├── notebook/              # Coret-coretan eksperimen (.ipynb)
+├── outputs/               # Hasil deteksi berupa gambar/video output
+├── src/                   # Kumpulan script logika utama
+├── .gitignore             # File untuk mengabaikan file gajah dari Git
+├── requirements.txt       # Daftar pustaka (library) Python
+└── test_yolo.py           # Script pengujian awal model YOLOv8
+⚙️ Persiapan dan Instalasi
+Pastikan menggunakan Python 3.11 agar ekosistem Machine Learning stabil.
 
-## ⚙️ Persiapan dan Instalasi
-Pastikan menggunakan **Python 3.11** agar *environment* stabil.
+1. Buat & Aktifkan Virtual Environment
 
-1. Buat *virtual environment*:
-   ```bash
-   py -3.11 -m venv venv
-Aktifkan environment:
-
-Windows: .\venv\Scripts\activate
-
-Install semua library yang dibutuhkan:
+Bash
+py -3.11 -m venv venv
+.\venv\Scripts\activate   # Untuk Windows
+2. Install Dependencies
 
 Bash
 pip install -r requirements.txt
 🚀 Cara Penggunaan Dasar
-Untuk melakukan pengetesan awal deteksi objek dari file video menggunakan model pre-trained YOLOv8:
+Untuk melakukan pengetesan awal deteksi objek dari file video:
 
 Bash
 python test_yolo.py
 
-### Langkah 2: Setup dan Push ke GitHub
-Sekarang kita "terbangin" file README ini barengan sama file-file kodingan Aa sebelumnya ke repo GitHub yang masih kosong itu. 
+### Cara *Update* ke GitHub:
+Kalau udah di-*save* di VS Code, tinggal kita dorong lagi perubahannya ke GitHub. Buka terminal (pastikan masih di dalam folder `C:\futsal-cv\`), lalu jalankan tiga perintah ini:
 
-Buka terminal VS Code (pastiin masih di dalam `C:\futsal-cv\`), lalu eksekusi perintah ini secara berurutan:
+1. `git add README.md`
+2. `git commit -m "Update tampilan README dengan badge dan tabel portofolio"`
+3. `git push origin main`
 
-**1. Masukin semua file ke antrean:**
-```bash
-git add .
-2. Simpan perubahannya (commit):
+Silakan di-*refresh* halaman GitHub-nya, Aa! Dijamin langsung tampil beda, ada tombol warna-warninya di tengah atas dan tabel progres yang rapi banget.
 
-Bash
-git commit -m "Menambahkan struktur proyek dan README"
-3. Sambungin ke GitHub Aa (kalau sebelumnya belum nyambung):
-
-Bash
-git remote set-url origin https://github.com/Farisifakhri/futsal-cv.git
-4. Ganti nama branch ke main:
-
-Bash
-git branch -M main
-5. Push ke awan:
-
-Bash
-git push -u origin main
+Gimana, udah puas sama tampilan "rumah" proyeknya? Kalau udah, mau kita lanjut bedah *script* buat motong vi
