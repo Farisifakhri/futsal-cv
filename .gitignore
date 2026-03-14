@@ -1,13 +1,21 @@
-# Mengabaikan Virtual Environment & Cache Python
+# Virtual Environment
 venv/
+.env
+
+# Python Cache
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 
-# Mengabaikan File Video & Dataset Gambar
-*.mp4
-*.avi
-dataset_frames/
+# Large Models (biar nggak berat pas push)
+models/*.pt
 
-# Mengabaikan Bobot Model YOLO & Folder Hasil Run
-*.pt
-runs/
+# Data & Outputs (gambar/video biasanya terlalu besar untuk GitHub)
+data/images/
+data/labels/
+data/*.mp4
+outputs/
+
+# IDE files
+.vscode/
+.idea/

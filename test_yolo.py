@@ -1,11 +1,11 @@
 import cv2
 from ultralytics import YOLO
 
-# Load model bawaan YOLO (akan otomatis download yolov8n.pt yang paling ringan)
-model = YOLO('yolov8n.pt')
+# Ubah path model
+model = YOLO('models/yolov8n.pt')
 
-# Buka webcam (angka 0). 
-cap = cv2.VideoCapture('tes_futsal.mp4')
+# Ubah path video
+cap = cv2.VideoCapture('data/tes_futsal.mp4')
 
 print("Kamera/Video berhasil dibuka. Tekan 'q' pada keyboard untuk keluar.")
 
