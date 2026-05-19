@@ -1,7 +1,12 @@
-path: ./data  # path dasar
+path: C:\futsal-cv\data
 train: images/train
-val: images/val
+val: images/valid
 test: images/test
 
-nc: 1
-names: ['wasit']
+nc: 5
+names:
+  0: keeper
+  1: official
+  2: outfield-players
+  3: players
+  4: referee
