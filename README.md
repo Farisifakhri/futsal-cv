@@ -18,48 +18,62 @@
 | :--- | :---: | :--- |
 | **Deteksi Objek Dasar** | ✅ Selesai | Mendeteksi entitas (orang, bola) menggunakan pre-trained YOLOv8. |
 | **Ekstraksi Dataset** | ✅ Selesai | Memotong video futsal menjadi *frame* gambar siap *labeling*. |
-| **Custom Model Futsal** | ⏳ *In Progress* | Melatih model untuk membedakan Tim A, Tim B, dan Wasit. |
-| **Logika Pelanggaran** | ⏳ *In Progress* | Mendeteksi benturan (*foul*) dan *gesture* wasit. |
+| **Custom Model Futsal** | ✅ Selesai | Melatih model kustom untuk mengenali Wasit, Pemain, Official, dan Kiper. |
+| **Logika Pelanggaran** | ⏳ *In Progress* | Mendeteksi benturan (*foul*) dan *gesture* wasit di lapangan. |
 | **Dashboard UI** | ⏳ *In Progress* | Antarmuka interaktif berbasis Web (Gradio/Streamlit). |
+
+---
+
+## 📊 Hasil Validasi Custom Model (YOLOv8n)
+Model dilatih selama **50 Epochs** menggunakan dataset berlabel buatan mandiri melalui Roboflow. Berikut metrik performa awal yang dicapai:
+
+* **Wasit (`referee`)**: `mAP50 = 0.741 (74.1%)` 🏆 *(Akurasi tertinggi!)*
+* **Pemain (`players`)**: `mAP50 = 0.732 (73.2%)`
+* **Petugas Meja (`official`)**: `mAP50 = 0.674 (67.4%)`
 
 ---
 
 ## 📂 Struktur Proyek
 ```text
 C:\futsal-cv\
-├── data/                  # Tempat menyimpan video mentah dan hasil ekstrak frame
-├── models/                # Tempat menyimpan bobot (weights) model YOLO
+├── data/                  # Folder dataset (images & labels untuk train/valid)
+├── models/                # Tempat menyimpan bobot (weights) model YOLO standar
 ├── notebook/              # Coret-coretan eksperimen (.ipynb)
-├── outputs/               # Hasil deteksi berupa gambar/video output
-├── src/                   # Kumpulan script logika utama
+├── runs/                  # Hasil output training model kustom (.pt) dan log performa
+├── src/                   # Kumpulan script logika utama (preprocess, inference)
 ├── .gitignore             # File untuk mengabaikan file gajah dari Git
-├── requirements.txt       # Daftar pustaka (library) Python
-└── test_yolo.py           # Script pengujian awal model YOLOv8
+├── main.py                # Script utama untuk menjalankan deteksi pada video
+├── train.py               # Script untuk melatih/melanjutkan training model kustom
+└── requirements.txt       # Daftar pustaka (library) Python
 ⚙️ Persiapan dan Instalasi
 Pastikan menggunakan Python 3.11 agar ekosistem Machine Learning stabil.
 
 1. Buat & Aktifkan Virtual Environment
-
 Bash
 py -3.11 -m venv venv
 .\venv\Scripts\activate   # Untuk Windows
 2. Install Dependencies
-
 Bash
 pip install -r requirements.txt
-🚀 Cara Penggunaan Dasar
-Untuk melakukan pengetesan awal deteksi objek dari file video:
+🚀 Cara Penggunaan
+Uji Coba Model Custom pada Video
+Untuk menjalankan deteksi pertandingan menggunakan model kustom terbaik hasil training:
 
 Bash
-python test_yolo.py
+python main.py
+Melatih Ulang / Melanjutkan Latihan Model
+Jika ingin melakukan resume training dari checkpoint terakhir:
 
-### Cara *Update* ke GitHub:
-Kalau udah di-*save* di VS Code, tinggal kita dorong lagi perubahannya ke GitHub. Buka terminal (pastikan masih di dalam folder `C:\futsal-cv\`), lalu jalankan tiga perintah ini:
+Bash
+python train.py
+
+---
+
+### 💻 Cara Mendorong Perubahan ke GitHub:
+Setelah file `README.md` Aa simpan di VS Code, jalankan baris perintah ini di terminal belahan kanan Aa kemarin:
 
 1. `git add README.md`
-2. `git commit -m "Update tampilan README dengan badge dan tabel portofolio"`
+2. `git commit -m "Docs: Update README target portfolio and add custom model validation results"`
 3. `git push origin main`
 
-Silakan di-*refresh* halaman GitHub-nya, Aa! Dijamin langsung tampil beda, ada tombol warna-warninya di tengah atas dan tabel progres yang rapi banget.
-
-Gimana, udah puas sama tampilan "rumah" proyeknya? Kalau udah, mau kita lanjut bedah *script* buat motong vi
+Silakan di-*refresh* repositori GitHub-nya, Aa! Dijamin profil proyeknya sekarang terlihat semakin profesional dengan rapor mAP50 yang mentereng wkwk.
