@@ -1,30 +1,41 @@
 import torch
 import os
 
+# --- Tambahkan penanganan keamanan PyTorch 2.6+ di bagian paling atas ---
 if hasattr(torch.serialization, 'add_safe_globals'):
     try:
         from ultralytics.nn.tasks import DetectionModel
         torch.serialization.add_safe_globals([DetectionModel])
     except ImportError:
         pass
+# ---------------------------------------------------------------------
 
 from ultralytics import YOLO
 
-def resume_training():
-    # KUNCI UTAMA: Kita tembak langsung ke folder yolov8n_futsal7
-    last_model_path = r'C:\futsal-cv\runs\detect\runs\futsal\yolov8n_futsal7\weights\last.pt'
-    
-    if os.path.exists(last_model_path):
-        print("--- Checkpoint Ke-7 Ditemukan! Melanjutkan Training ---")
-        model = YOLO(last_model_path)
+def train_custom_model():
+    # 1. Inisialisasi model YOLOv8 Nano (Pre-trained)
+    model_path = 'models/yolov8n.pt'
+    if not os.path.exists(model_path):
+        os.makedirs('models', exist_ok=True)
         
-        # Perintah sakti untuk melanjutkan sisa epoch dari titik terakhir
-        model.train(resume=True)
-    else:
-        print(f"Error: File checkpoint masih tidak ditemukan di:\n -> {last_model_path}")
-        print("\nCoba Aa cek sekali lagi ke dalam folder:")
-        print("C:\\futsal-cv\\runs\\detect\\runs\\futsal\\")
-        print("Apakah nama foldernya benar 'yolov8n_futsal7' atau ada angka lain, Aa?")
+    model = YOLO(model_path)
+
+    print("--- Memulai Proses Training Custom Model Futsal ---")
+    
+    # 2. Jalankan Training
+    results = model.train(
+        data='data/data.yaml',      # File konfigurasi dataset
+        epochs=50,                  # Jumlah iterasi latihan
+        imgsz=640,                  # Ukuran gambar standar
+        batch=16,                   # Jumlah gambar per batch
+        device='0' if os.environ.get('CUDA_VISIBLE_DEVICES') else 'cpu', # Gunakan GPU jika ada
+        project='runs/futsal',      # Folder penyimpanan hasil training
+        name='yolov8n_futsal'
+    )
+    
+    print("--- Training Selesai! ---")
+    print("Model terbaik disimpan di: runs/futsal/yolov8n_futsal/weights/best.pt")
 
 if __name__ == "__main__":
-    resume_training()
+    train_custom_model()
+    
