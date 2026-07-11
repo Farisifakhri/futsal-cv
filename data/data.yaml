@@ -1,12 +1,14 @@
 path: C:\futsal-cv\data
-train: images/train
-val: images/valid
-test: images/test
+train: train/images
+val: valid/images
+test: test/images
 
-nc: 5
-names:
-  0: keeper
-  1: official
-  2: outfield-players
-  3: players
-  4: referee
+nc: 4
+names: ['keeper', 'official', 'players', 'referee']
+
+roboflow:
+  workspace: risifar
+  project: futsal-referee-detection
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/risifar/futsal-referee-detection/dataset/1

@@ -52,8 +52,17 @@ def extract_frames(video_path, output_dir, frame_interval=30):
 
 
 if __name__ == "__main__":
-    extract_frames(
-        video_path     = "data/tes_futsal.mp4",
-        output_dir     = "data/raw_frames",       # Folder hasil ekstrak
-        frame_interval = 30                        # Ganti ke 15 jika ingin lebih banyak gambar
-    )
+    clips = [
+        {"path": "data/clips/klip1.mp4", "interval": 15},
+        {"path": "data/clips/klip2.mp4", "interval": 15},
+        {"path": "data/clips/klip3.mp4", "interval": 15},
+        {"path": "data/clips/klip4.mp4", "interval": 15},
+        {"path": "data/clips/klip5.mp4", "interval": 15},
+    ]
+
+    for i, clip in enumerate(clips, start=1):
+        extract_frames(
+            video_path=clip["path"],
+            output_dir=f"data/raw_frames/klip{i}",   
+            frame_interval=clip["interval"]
+        )

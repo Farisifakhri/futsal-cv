@@ -1,21 +1,48 @@
+# ==========================
 # Virtual Environment
+# ==========================
+.venv/
 venv/
 .env
 
+# ==========================
 # Python Cache
+# ==========================
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Large Models (biar nggak berat pas push)
-models/*.pt
+# ==========================
+# Jupyter
+# ==========================
+.ipynb_checkpoints/
 
-# Data & Outputs (gambar/video biasanya terlalu besar untuk GitHub)
-data/images/
-data/labels/
-data/*.mp4
-outputs/
-
-# IDE files
+# ==========================
+# IDE
+# ==========================
 .vscode/
 .idea/
+
+# ==========================
+# YOLO Models
+# ==========================
+*.pt
+models/history/
+
+# ==========================
+# YOLO Training Output
+# ==========================
+runs/
+outputs/
+
+# ==========================
+# Videos
+# ==========================
+*.mp4
+*.avi
+*.mov
+
+# ==========================
+# Optional: Raw extracted frames
+# ==========================
+data/raw_frames/
