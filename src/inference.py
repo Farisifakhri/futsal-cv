@@ -1,24 +1,61 @@
 from ultralytics import YOLO
-import cv2
+from src.config import MODEL_PATH
+
 
 class FutsalDetector:
-    def __init__(self, model_path=r'C:\futsal-cv\runs\detect\runs\futsal\yolov8n_futsal7\weights\best.pt'):
-        """
-        Load model YOLO menggunakan custom weights hasil training ke-7 Aa yang sukses.
-        """
-        self.model = YOLO(model_path)
+    """
+    Kelas utama untuk melakukan inferensi model YOLOv8 Futsal.
+    """
 
-    def detect_referee(self, frame):
+    def __init__(self, model_path=MODEL_PATH):
+        self.model = YOLO(str(model_path))
+
+    def detect(self, frame, conf=0.35):
         """
-        Menjalankan deteksi pada satu frame untuk seluruh kelas custom futsal 
-        (keeper, official, outfield-players, players, referee).
+        Deteksi objek pada satu frame.
         """
-        # KUNCI UTAMA: Hapus parameter classes agar semua objek custom Aa langsung terdeteksi
-        results = self.model(frame)
+        results = self.model(
+            frame,
+            conf=conf,
+            verbose=False
+        )
         return results
 
-    def plot_results(self, frame, results):
+    def track(self, frame, conf=0.35):
         """
-        Menggambar kotak (bounding box) beserta nama kelas custom langsung pada frame.
+        Tracking objek menggunakan ByteTrack.
+        """
+        results = self.model.track(
+            frame,
+            conf=conf,
+            persist=True,
+            tracker="bytetrack.yaml",
+            verbose=False
+        )
+        return results
+
+    def plot_results(self, results):
+        """
+        Menggambar bounding box hasil deteksi.
         """
         return results[0].plot()
+
+    def count_objects(self, results):
+        """
+        Menghitung jumlah objek tiap kelas.
+        """
+
+        counts = {}
+
+        if len(results) == 0:
+            return counts
+
+        for box in results[0].boxes:
+
+            cls = int(box.cls.item())
+
+            class_name = self.model.names[cls]
+
+            counts[class_name] = counts.get(class_name, 0) + 1
+
+        return counts
