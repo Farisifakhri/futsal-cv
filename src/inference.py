@@ -1,5 +1,5 @@
 from ultralytics import YOLO
-from src.config import MODEL_PATH
+from src.config import MODEL_PATH, TRACKER_PATH
 
 
 class FutsalDetector:
@@ -29,7 +29,7 @@ class FutsalDetector:
             frame,
             conf=conf,
             persist=True,
-            tracker="bytetrack.yaml",
+            tracker=str(TRACKER_PATH),
             verbose=False
         )
         return results

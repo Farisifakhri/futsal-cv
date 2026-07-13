@@ -46,3 +46,13 @@ outputs/
 # Optional: Raw extracted frames
 # ==========================
 data/raw_frames/
+# ==========================
+# Dataset (dikelola via Roboflow, jangan commit ke git)
+# ==========================
+data/train/images/
+data/train/labels/
+data/valid/images/
+data/valid/labels/
+data/test/images/
+data/test/labels/
+data/*/labels.cache

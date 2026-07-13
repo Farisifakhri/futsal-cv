@@ -1,0 +1,7 @@
+tracker_type: bytetrack   # tipe tracker, jangan diubah
+track_high_thresh: 0.3    # default 0.5 -> diturunkan biar deteksi conf sedang tetap dipakai
+track_low_thresh: 0.1     # default 0.1, tetap
+new_track_thresh: 0.25    # default 0.6 -> ini yang paling penting, gerbang spawn track baru
+track_buffer: 30          # default 30, berapa frame track ditahan walau sempat hilang
+match_thresh: 0.8         # default 0.8, tetap
+fuse_score: True          # default True, gabungkan skor deteksi ke matching cost

@@ -8,7 +8,7 @@ from src.calibration_tool import get_calibration_points_from_video, find_calibra
 
 
 # --- konfigurasi ---
-VIDEO_PATH = "data/clips/klip4.mp4"
+VIDEO_PATH = "data/clips/klip3.mp4"
 # 1. UBAH: Nama file output disesuaikan untuk hasil heatmap pemain
 OUTPUT_HEATMAP = "outputs/heatmap_players_final.png"
 
