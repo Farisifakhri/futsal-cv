@@ -81,8 +81,8 @@ def run_pipeline():
         epochs=50,
         imgsz=640,
         batch=16,
-        device='0' if os.environ.get('CUDA_VISIBLE_DEVICES') else 'cpu',
-        project='runs/futsal',
+        device=0 if torch.cuda.is_available() else 'cpu',
+        project='futsal',
         name='yolov8n_futsal_pipeline',
         exist_ok=True,
         patience=15,
@@ -99,13 +99,22 @@ def run_pipeline():
     print("Training Pipeline Finished!")
     print("==================================================")
 
-    trained_best = os.path.join('runs', 'futsal', 'yolov8n_futsal_pipeline', 'weights', 'best.pt')
+    possible_best_paths = [
+        os.path.join('futsal', 'yolov8n_futsal_pipeline', 'weights', 'best.pt'),
+        os.path.join('runs', 'futsal', 'yolov8n_futsal_pipeline', 'weights', 'best.pt'),
+    ]
 
-    if os.path.exists(trained_best):
+    trained_best = None
+    for p in possible_best_paths:
+        if os.path.exists(p):
+            trained_best = p
+            break
+
+    if trained_best and os.path.exists(trained_best):
         shutil.copy(trained_best, stable_path)
         print(f"Model terbaik berhasil disalin ke: {os.path.abspath(stable_path)}")
     else:
-        print(f"[WARN] File model terbaik tidak ditemukan di: {trained_best}")
+        print(f"[WARN] File model terbaik tidak ditemukan di: {possible_best_paths}")
 
 if __name__ == "__main__":
     run_pipeline()
