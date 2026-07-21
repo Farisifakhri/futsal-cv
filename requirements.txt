@@ -8,6 +8,6 @@ numpy>=1.24.0
 # Library tambahan untuk pelacakan (tracking) dan dataset
 roboflow
 lapx>=0.5.5
+python-dotenv>=1.0.0
 
 # Framework UI (kalau nanti Aa mau bikin dashboard/web sederhana kayak di jurnal Puspita)
-gradio

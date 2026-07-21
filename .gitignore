@@ -30,10 +30,13 @@ __pycache__/
 models/history/
 
 # ==========================
-# YOLO Training Output
+# YOLO Training Output & Datasets
 # ==========================
 runs/
 outputs/
+data_processed/
+data_augmented/
+archive/
 
 # ==========================
 # Videos

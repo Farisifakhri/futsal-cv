@@ -1,14 +1,18 @@
-path: C:\futsal-cv\data
+# Configuration for Futsal-Detection-NCFS (4 Classes)
 train: train/images
 val: valid/images
 test: test/images
 
 nc: 4
-names: ['keeper', 'official', 'players', 'referee']
+names:
+  0: ball
+  1: goalkeeper
+  2: player
+  3: referee
 
 roboflow:
   workspace: risifar
-  project: futsal-referee-detection
+  project: futsal-detection-ncfs
   version: 1
   license: CC BY 4.0
-  url: https://universe.roboflow.com/risifar/futsal-referee-detection/dataset/1
+  url: https://universe.roboflow.com/risifar/futsal-detection-ncfs/dataset/1
