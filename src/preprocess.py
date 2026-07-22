@@ -19,14 +19,15 @@ def apply_clahe_contrast(image):
     enhanced_image = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
     return enhanced_image
 
-def prepare_frame(frame, width=640, height=640, apply_clahe=True):
+def prepare_frame(frame, apply_clahe=True):
     """
-    Melakukan preprocessing pada single frame (resize + CLAHE contrast enhancement).
+    Melakukan preprocessing pada single frame (CLAHE contrast enhancement saja).
+    Resolusi asli dipertahankan agar detail objek kecil (ball) tidak hilang.
+    YOLO akan melakukan resize secara internal (letterbox) saat training/inference.
     """
-    resized = cv2.resize(frame, (width, height))
     if apply_clahe:
-        resized = apply_clahe_contrast(resized)
-    return resized
+        frame = apply_clahe_contrast(frame)
+    return frame
 
 def extract_frames(video_path, output_folder, gap=30):
     """
@@ -51,15 +52,18 @@ def preprocess_dataset(src_root="data", dst_root="data_processed", apply_clahe=T
     """
     Mengeksekusi preprocessing (CLAHE contrast enhancement & copy labels)
     pada seluruh split dataset (train, valid, test).
+    
+    NOTE: Resolusi asli gambar dipertahankan (TIDAK di-resize).
+    Ini penting untuk deteksi objek kecil seperti bola futsal.
     """
     src_path = Path(src_root)
     dst_path = Path(dst_root)
     
     splits = ['train', 'valid', 'test']
     print("==================================================")
-    print("[Step 1/3] Memulai Preprocessing Dataset Lokal")
-    print(f"Source : {src_path.resolve()}")
-    print(f"Target : {dst_path.resolve()}")
+    print("🚀 [Step 1/3] Memulai Preprocessing Dataset Lokal")
+    print(f"📌 Source : {src_path.resolve()}")
+    print(f"📌 Target : {dst_path.resolve()}")
     print("==================================================")
     
     total_images_processed = 0
@@ -87,7 +91,7 @@ def preprocess_dataset(src_root="data", dst_root="data_processed", apply_clahe=T
             if img is None:
                 continue
                 
-            # 2. Preprocessing CLAHE / Resize
+            # 2. Preprocessing CLAHE (tanpa resize — pertahankan resolusi asli)
             processed_img = prepare_frame(img, apply_clahe=apply_clahe)
             
             # 3. Simpan Gambar Preprocessed

@@ -10,4 +10,5 @@ roboflow
 lapx>=0.5.5
 python-dotenv>=1.0.0
 
-# Framework UI (kalau nanti Aa mau bikin dashboard/web sederhana kayak di jurnal Puspita)
+# Visualisasi grafik performa training
+matplotlib>=3.7.0

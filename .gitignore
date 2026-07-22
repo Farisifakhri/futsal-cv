@@ -33,6 +33,8 @@ models/history/
 # YOLO Training Output & Datasets
 # ==========================
 runs/
+futsal/
+wandb/
 outputs/
 data_processed/
 data_augmented/

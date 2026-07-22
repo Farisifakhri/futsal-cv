@@ -23,7 +23,7 @@ def download_futsal_dataset(download_dir="data", model_format="yolov8"):
     api_key = os.getenv("ROBOFLOW_API_KEY")
     workspace_name = os.getenv("ROBOFLOW_WORKSPACE", "risifar")
     project_name = os.getenv("ROBOFLOW_PROJECT", "futsal-detection-ncfs")
-    version_num = int(os.getenv("ROBOFLOW_VERSION", "1"))
+    version_num = int(os.getenv("ROBOFLOW_VERSION", "6"))
 
     if not api_key:
         raise ValueError(
