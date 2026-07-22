@@ -327,7 +327,10 @@ def run_pipeline(model_type="yolov8m.pt", imgsz=1280, epochs=80):
         dfl=1.5,                # Distribution Focal Loss (default)
         
         # --- Multi-Scale Training ---
-        multi_scale=True,       # ⚡ KUNCI: Variasi ukuran input → deteksi multi-size
+        # NOTE: multi_scale=True dinonaktifkan karena bug di ultralytics 8.1.0
+        # (random.randrange() menerima float dari imgsz*0.5 → TypeError)
+        # Variasi skala sudah ter-cover oleh parameter scale=0.9 di augmentasi geometris
+        multi_scale=False,
     )
 
     print("==================================================")
