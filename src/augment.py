@@ -79,9 +79,9 @@ def augment_dataset(src_root="data_processed", dst_root="data_augmented", augmen
     
     splits = ['train', 'valid', 'test']
     print("==================================================")
-    print("🚀 [Step 2/3] Memulai Data Augmentation Offline Lokal")
-    print(f"📌 Source : {src_path.resolve()}")
-    print(f"📌 Target : {dst_path.resolve()}")
+    print("[Step 2/3] Memulai Data Augmentation Offline Lokal")
+    print(f"Source : {src_path.resolve()}")
+    print(f"Target : {dst_path.resolve()}")
     print("==================================================")
     
     total_images_generated = 0

@@ -57,9 +57,9 @@ def preprocess_dataset(src_root="data", dst_root="data_processed", apply_clahe=T
     
     splits = ['train', 'valid', 'test']
     print("==================================================")
-    print("🚀 [Step 1/3] Memulai Preprocessing Dataset Lokal")
-    print(f"📌 Source : {src_path.resolve()}")
-    print(f"📌 Target : {dst_path.resolve()}")
+    print("[Step 1/3] Memulai Preprocessing Dataset Lokal")
+    print(f"Source : {src_path.resolve()}")
+    print(f"Target : {dst_path.resolve()}")
     print("==================================================")
     
     total_images_processed = 0

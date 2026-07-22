@@ -8,12 +8,14 @@ import numpy as np
 if not hasattr(np, 'trapz'):
     np.trapz = np.trapezoid
 
-# --- Fix untuk PyTorch 2.6+ weights_only default ---
-_original_torch_load = torch.load
-def _patched_torch_load(*args, **kwargs):
-    kwargs.setdefault('weights_only', False)
-    return _original_torch_load(*args, **kwargs)
-torch.load = _patched_torch_load
+# --- Fix untuk PyTorch 2.6+ weights_only default (Aman dari RecursionError di Notebook) ---
+if not getattr(torch, '_is_patched_for_weights_only', False):
+    _original_torch_load = torch.load
+    def _patched_torch_load(*args, **kwargs):
+        kwargs.setdefault('weights_only', False)
+        return _original_torch_load(*args, **kwargs)
+    torch.load = _patched_torch_load
+    torch._is_patched_for_weights_only = True
 
 from ultralytics import YOLO
 from src.preprocess import preprocess_dataset
@@ -42,7 +44,7 @@ names:
         f.write(yaml_content)
     print(f"Config created at: {os.path.abspath(output_yaml_path)}")
 
-def run_pipeline(model_type="yolov8m.pt", imgsz=640, epochs=50):
+def run_pipeline(model_type="yolov8m.pt", imgsz=1280, epochs=100):
     """
     Menjalankan alur lengkap:
     Step 1: Preprocessing Citra (CLAHE Contrast Enhancement)
@@ -62,16 +64,22 @@ def run_pipeline(model_type="yolov8m.pt", imgsz=640, epochs=50):
     # 4. Modeling menggunakan YOLO (Default: YOLOv8m.pt)
     model_name_clean = Path(model_type).stem
     model_path = os.path.join('models', model_type if model_type.endswith('.pt') else f"{model_type}.pt")
-    if not os.path.exists(model_path):
-        os.makedirs('models', exist_ok=True)
+    
+    # Cek apakah pretrained weights lokal sudah ada di folder models/, jika belum panggil name-nya langsung agar auto-download
+    if os.path.exists(model_path):
+        model_to_load = model_path
+    else:
+        model_to_load = model_type
 
-    stable_path = os.path.join('models', 'best_futsal.pt')
+    os.makedirs('models', exist_ok=True)
+    stable_path_v8m = os.path.join('models', 'best_futsal_v8m.pt')
+    stable_path_default = os.path.join('models', 'best_futsal.pt')
 
     print("==================================================")
     print(f"[Step 3/3] Memulai Training Model {model_name_clean.upper()} (imgsz={imgsz})")
     print("==================================================")
 
-    model = YOLO(model_path)
+    model = YOLO(model_to_load)
 
     results = model.train(
         data=yaml_path,
@@ -108,8 +116,9 @@ def run_pipeline(model_type="yolov8m.pt", imgsz=640, epochs=50):
             break
 
     if trained_best and os.path.exists(trained_best):
-        shutil.copy(trained_best, stable_path)
-        print(f"Model terbaik ({model_name_clean}) berhasil disalin ke: {os.path.abspath(stable_path)}")
+        shutil.copy(trained_best, stable_path_v8m)
+        shutil.copy(trained_best, stable_path_default)
+        print(f"Model terbaik ({model_name_clean}) berhasil disalin ke: {os.path.abspath(stable_path_v8m)}")
     else:
         print(f"[WARN] File model terbaik tidak ditemukan di: {possible_best_paths}")
 
