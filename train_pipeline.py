@@ -42,17 +42,13 @@ names:
         f.write(yaml_content)
     print(f"Config created at: {os.path.abspath(output_yaml_path)}")
 
-def run_pipeline():
+def run_pipeline(model_type="yolov8m.pt", imgsz=640, epochs=50):
     """
     Menjalankan alur lengkap:
-    Step 1: PreprocessingCitra (CLAHE Contrast Enhancement)
+    Step 1: Preprocessing Citra (CLAHE Contrast Enhancement)
     Step 2: Augmentasi Data Offline (Flip, Brightness/Contrast, HSV Shift)
-    Step 3: Modeling & Training YOLOv8n
+    Step 3: Modeling & Training YOLO (Default: YOLOv8m Medium Model)
     """
-    # print("==================================================")
-    # print("Pipeline Training Custom Model")
-    # print("==================================================")
-
     # 1. Preprocessing Data
     processed_dir = preprocess_dataset(src_root="data", dst_root="data_processed")
 
@@ -63,27 +59,28 @@ def run_pipeline():
     yaml_path = os.path.join(augmented_dir, "data.yaml")
     create_augmented_yaml(yaml_path)
 
-    # 4. Modeling menggunakan YOLOv8n
-    model_path = 'models/yolov8n.pt'
+    # 4. Modeling menggunakan YOLO (Default: YOLOv8m.pt)
+    model_name_clean = Path(model_type).stem
+    model_path = os.path.join('models', model_type if model_type.endswith('.pt') else f"{model_type}.pt")
     if not os.path.exists(model_path):
         os.makedirs('models', exist_ok=True)
 
     stable_path = os.path.join('models', 'best_futsal.pt')
 
     print("==================================================")
-    print("[Step 3/3] Memulai Training Model YOLOv8")
+    print(f"[Step 3/3] Memulai Training Model {model_name_clean.upper()} (imgsz={imgsz})")
     print("==================================================")
 
     model = YOLO(model_path)
 
     results = model.train(
         data=yaml_path,
-        epochs=50,
-        imgsz=640,
-        batch=16,
+        epochs=epochs,
+        imgsz=imgsz,
+        batch=16 if imgsz <= 640 else 8,
         device=0 if torch.cuda.is_available() else 'cpu',
         project='futsal',
-        name='yolov8n_futsal_pipeline',
+        name=f'{model_name_clean}_futsal_pipeline',
         exist_ok=True,
         patience=15,
         mosaic=1.0,     # Augmentasi Mosaic untuk objek kecil (bola)
@@ -100,8 +97,8 @@ def run_pipeline():
     print("==================================================")
 
     possible_best_paths = [
-        os.path.join('futsal', 'yolov8n_futsal_pipeline', 'weights', 'best.pt'),
-        os.path.join('runs', 'futsal', 'yolov8n_futsal_pipeline', 'weights', 'best.pt'),
+        os.path.join('futsal', f'{model_name_clean}_futsal_pipeline', 'weights', 'best.pt'),
+        os.path.join('runs', 'futsal', f'{model_name_clean}_futsal_pipeline', 'weights', 'best.pt'),
     ]
 
     trained_best = None
@@ -112,7 +109,7 @@ def run_pipeline():
 
     if trained_best and os.path.exists(trained_best):
         shutil.copy(trained_best, stable_path)
-        print(f"Model terbaik berhasil disalin ke: {os.path.abspath(stable_path)}")
+        print(f"Model terbaik ({model_name_clean}) berhasil disalin ke: {os.path.abspath(stable_path)}")
     else:
         print(f"[WARN] File model terbaik tidak ditemukan di: {possible_best_paths}")
 
