@@ -112,6 +112,8 @@ def random_scale_crop(image, bboxes, scale_range=(0.6, 0.9)):
 def read_yolo_labels(label_path):
     """
     Membaca file label YOLO format .txt.
+    Mendukung format Bounding Box standar (5 elemen) maupun Polygon/Segmentation (>5 elemen).
+    Jika label berformat Polygon, otomatis dikonversi menjadi Bounding Box presisi (min/max).
     """
     bboxes = []
     if not os.path.exists(label_path):
@@ -121,10 +123,25 @@ def read_yolo_labels(label_path):
         lines = f.readlines()
         for line in lines:
             parts = line.strip().split()
-            if len(parts) >= 5:
+            if len(parts) == 5:
+                # Format Bounding Box Standar: class_id x_center y_center width height
                 cls_id = int(parts[0])
                 coords = [float(p) for p in parts[1:5]]
                 bboxes.append([cls_id] + coords)
+            elif len(parts) > 5:
+                # Format Polygon/Segmentation: class_id x1 y1 x2 y2 x3 y3 ...
+                cls_id = int(parts[0])
+                points = [float(p) for p in parts[1:]]
+                xs = points[0::2]
+                ys = points[1::2]
+                if xs and ys:
+                    x_min, x_max = min(xs), max(xs)
+                    y_min, y_max = min(ys), max(ys)
+                    w = round(x_max - x_min, 6)
+                    h = round(y_max - y_min, 6)
+                    x_c = round(x_min + w / 2.0, 6)
+                    y_c = round(y_min + h / 2.0, 6)
+                    bboxes.append([cls_id, x_c, y_c, w, h])
     return bboxes
 
 def write_yolo_labels(label_path, bboxes):
