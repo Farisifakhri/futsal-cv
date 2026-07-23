@@ -160,9 +160,9 @@ def augment_dataset(src_root="data_processed", dst_root="data_augmented", augmen
     
     splits = ['train', 'valid', 'test']
     print("==================================================")
-    print("🚀 [Step 2/3] Memulai Data Augmentation Offline (Class-Aware)")
-    print(f"📌 Source : {src_path.resolve()}")
-    print(f"📌 Target : {dst_path.resolve()}")
+    print("[Step 2/3] Memulai Data Augmentation Offline (Class-Aware)")
+    print(f"Source : {src_path.resolve()}")
+    print(f"Target : {dst_path.resolve()}")
     print("==================================================")
     
     total_images_generated = 0
@@ -244,8 +244,8 @@ def augment_dataset(src_root="data_processed", dst_root="data_augmented", augmen
 
     print("==================================================")
     print(f"✅ Data Augmentation selesai! Total {total_images_generated} gambar dalam dataset akhir.")
-    print(f"📊 Gambar train dengan kelas minoritas (ball/goalkeeper): {minority_count} → 5 variasi/gambar")
-    print(f"📊 Gambar train tanpa kelas minoritas: {majority_count} → 3 variasi/gambar")
+    print(f"Gambar train dengan kelas minoritas (ball/goalkeeper): {minority_count} → 5 variasi/gambar")
+    print(f"Gambar train tanpa kelas minoritas: {majority_count} → 3 variasi/gambar")
     print("==================================================")
     return dst_path
 

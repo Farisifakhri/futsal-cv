@@ -270,8 +270,8 @@ def run_pipeline(model_type="yolov8m.pt", imgsz=1280, epochs=80):
     stable_path = os.path.join('models', 'best_futsal.pt')
 
     print("==================================================")
-    print(f"🚀 [Step 3/3] Memulai Training Model {model_name_clean.upper()}")
-    print(f"📌 imgsz={imgsz} | epochs={epochs} | batch=auto-calculated")
+    print(f"[Step 3/3] Memulai Training Model {model_name_clean.upper()}")
+    print(f"imgsz={imgsz} | epochs={epochs} | batch=auto-calculated")
     print("==================================================")
 
     model = YOLO(model_to_load)
@@ -334,7 +334,7 @@ def run_pipeline(model_type="yolov8m.pt", imgsz=1280, epochs=80):
     )
 
     print("==================================================")
-    print("✅ Training Pipeline Finished!")
+    print("Training Pipeline Finished!")
     print("==================================================")
 
     # 5. Cari dan simpan model terbaik
@@ -352,7 +352,7 @@ def run_pipeline(model_type="yolov8m.pt", imgsz=1280, epochs=80):
 
     if trained_best and os.path.exists(trained_best):
         shutil.copy(trained_best, stable_path)
-        print(f"🏆 Model terbaik disalin ke: {os.path.abspath(stable_path)}")
+        print(f"Model terbaik disalin ke: {os.path.abspath(stable_path)}")
     else:
         print(f"[WARN] File model terbaik tidak ditemukan di: {possible_best_paths}")
 

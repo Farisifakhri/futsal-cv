@@ -12,7 +12,9 @@ def apply_clahe_contrast(image):
     lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
     l, a, b = cv2.split(lab)
     
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+    #CLAHE membagi gambar menjadi kotak-kotak kecil (di kode kita: ukuran grid 8x8 kotak melalui tileGridSize=(8, 8)), lalu memproses tiap kotak secara mandiri
+    #clipLimit: mengatur jumlah kontras maksimum yang diterapkan pada satu wilayah. Nilai 2.0 berarti kontras akan ditingkatkan tidak lebih dari 2 kali lipat.
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8)) 
     cl = clahe.apply(l)
     
     limg = cv2.merge((cl, a, b))
@@ -61,9 +63,9 @@ def preprocess_dataset(src_root="data", dst_root="data_processed", apply_clahe=T
     
     splits = ['train', 'valid', 'test']
     print("==================================================")
-    print("🚀 [Step 1/3] Memulai Preprocessing Dataset Lokal")
-    print(f"📌 Source : {src_path.resolve()}")
-    print(f"📌 Target : {dst_path.resolve()}")
+    print("[Step 1/3] Memulai Preprocessing Dataset Lokal")
+    print(f"Source : {src_path.resolve()}")
+    print(f"Target : {dst_path.resolve()}")
     print("==================================================")
     
     total_images_processed = 0
